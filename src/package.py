@@ -56,10 +56,12 @@ async def get_package(name: str, version: Optional[str] = None) -> dict:
 async def get_dependencies(name: str, range: str) -> Package:
     # We cache at this level to avoid redundant npm look-ups on package dependencies we have already seen
     pd_key = f"{name}_{range}".replace(" ", "")
+    circular_d_key = f"{pd_key}_dp"
 
     cached_result = CS.get(pd_key)
+    circular_dep_check = CS.get(circular_d_key)
 
-    if cached_result is None and pd_key in CIRCULAR_DEPENDENCY_CHECK:
+    if cached_result is None and circular_dep_check:
         return Package(name=name, version=range, dependencies=[])
 
     if cached_result is not None:
@@ -74,7 +76,7 @@ async def get_dependencies(name: str, range: str) -> Package:
         versions=npm_package["versions"],
     )
 
-    CIRCULAR_DEPENDENCY_CHECK[pd_key] = True
+    CS.put(circular_d_key, True)
 
     dependency_list = []
     version = max_satisfying(package.versions.keys(), range)
