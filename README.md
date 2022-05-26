@@ -7,8 +7,8 @@ multiple npm look-ups in its original state. I have cached at both the `get_depe
 The other issue was that in the original PR the format uses the npm package name as a key. This is not advisable as it makes it near impossible to
 query the response data when the key is dynamic.
 
-Other than that the issues are simply detecting when the response from the npm registry does not include a description,
-as well as determining when you're visiting a circular dependency. An example of this can be seen [here](https://npm.anvaka.com/#/view/2d/d) with reference to the npm package `d`.
+Other than the above, the issues are simply detecting when the response from the npm registry does not include a description,
+as well as determining when you're visiting a circular dependency. An example of this can be seen [here](https://npm.anvaka.com/#/view/2d/d) with reference to the npm package `d`. Without this check you will run into a maximum recursion depth exceeded error, as it will keep iterating over a collection of the same packages.
 
 If you're looking for a package to stress test use `largest-package` -> https://www.npmjs.com/package/largest-package
 
