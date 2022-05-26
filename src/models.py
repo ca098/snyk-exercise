@@ -4,13 +4,6 @@ from typing import Optional, List  # Add list
 from pydantic import BaseModel
 
 
-class TestClass:
-    def __init__(self, name, version, dependencies):
-        self.name = name
-        self.version = version
-        self.dependencies = dependencies
-
-
 class Package(BaseModel):
     name: str
     version: str
