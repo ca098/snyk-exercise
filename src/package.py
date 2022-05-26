@@ -8,11 +8,8 @@ from fastapi import HTTPException
 
 from src.services.caching_service import CachingService
 
-NPM_REGISTRY_URL = "https://registry.npmjs.org"
-
-
-CIRCULAR_DEPENDENCY_CHECK = {}
 CS = CachingService()
+NPM_REGISTRY_URL = "https://registry.npmjs.org"
 
 
 async def get_package(name: str, version: Optional[str] = None) -> dict:
